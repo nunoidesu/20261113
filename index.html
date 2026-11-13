@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+  <div class="shop-container">
+    <header class="shop-header">
+      <div>
+        <p class="shop-label">ONLINE STORE</p>
+        <h1>商品一覧</h1>
+      </div>
+      <p class="shop-description">お気に入りの商品を見つけよう。</p>
+    </header>
+
+    <section class="search-panel">
+      <div class="search-box">
+        <input
+          type="text"
+          v-model="keyword"
+          placeholder="商品名を入力してください"
+        >
+      </div>
+
+      <div class="filter-group">
+        <select v-model="selectedCategory">
+          <option value="">すべてのカテゴリー</option>
+          <option value="パソコン">パソコン</option>
+          <option value="周辺機器">周辺機器</option>
+          <option value="アクセサリー">アクセサリー</option>
+        </select>
+
+        <select v-model="sortType">
+          <option value="default">おすすめ順</option>
+          <option value="asc">価格が安い順</option>
+          <option value="desc">価格が高い順</option>
+        </select>
+      </div>
+
+      <label class="stock-filter">
+        <input type="checkbox" v-model="stockOnly">
+        在庫あり商品のみ表示
+      </label>
+    </section>
+
+    <section class="product-section">
+      <div class="result-header">
+        <h2>PRODUCTS</h2>
+
+        <p>{{ displayProducts.length }} 件の商品</p>
+      </div>
+
+      <div class="product-grid" v-if="displayProducts.length > 0">
+
+        <article
+          class="product-card"
+          v-for="product in displayProducts"
+          :key="product.id"
+        >
+          <div class="product-image">
+
+            <img :src="product.image" :alt="product.name">
+
+            <span class="category-label">{{ product.category }}</span>
+          </div>
+
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+
+            <p class="product-price">{{ product.formattedPrice }}</p>
+
+            <p
+              class="stock-status"
+              :class="{ 'out-of-stock': product.stock === 0 }"
+            >
+              {{ product.stockLabel }}
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <div class="empty-message" v-else>
+        <p>該当する商品が見つかりませんでした。</p>
+        <p>検索条件を変更してください。</p>
+      </div>
+    </section>
+  </div>
+</div>
+  
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
